@@ -201,7 +201,6 @@ dependencies = [
  "secp256k1",
  "serde",
  "serde_derive",
- "serde_json",
  "simplelog",
  "tiny-keccak 1.5.0",
 ]
@@ -489,12 +488,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3e75f6a532d0fd9f7f13144f392b6ad56a32696bfcd9c78f797f16bbb6f072d6"
 
 [[package]]
-name = "ryu"
-version = "1.0.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "71d301d4193d031abdd79ff7e3dd721168a9572ef3fe51a1517aba235bd8f86e"
-
-[[package]]
 name = "secp256k1"
 version = "0.15.3"
 source = "git+https://github.com/bifrost-codes/rust-secp256k1#9c756f7e5227e2e11c3fdb6b506ea6220bf1409b"
@@ -520,17 +513,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
-]
-
-[[package]]
-name = "serde_json"
-version = "1.0.57"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "164eacbdb13512ec2745fb09d51fd5b22b0d65ed294a1dcf7285a360c80a675c"
-dependencies = [
- "itoa",
- "ryu",
- "serde",
 ]
 
 [[package]]
