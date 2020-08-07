@@ -1,3 +1,7 @@
+use num_format::{
+    Locale,
+    ToFormattedString
+};
 use ethereum_types::{
     U256,
     Address as EthAddress,
@@ -14,14 +18,16 @@ use crate::lib::{
 };
 
 fn sign_transaction(state: State) -> Result<String> {
+    let total_eth: f64 = (state.value + (state.gas_price * state.gas_limit)).as_u64() as f64 / 1e18;
     info!("✔ Signing ETH transaction...");
     info!("✔ To: {}", state.to);
-    info!("✔ For amount: {} Wei", state.value);
-    info!("✔ Using nonce: {} ", state.nonce);
     info!("✔ On {} ", state.chain_id);
-    info!("✔ With gas limit of: {}", state.gas_limit);
-    info!("✔ And a gas price of: {} Wei", state.gas_price);
+    info!("✔ Using nonce: {} ", state.nonce);
+    info!("✔ For amount: {} Wei", state.value.as_u64().to_formatted_string(&Locale::en));
+    info!("✔ With gas limit of: {}", state.gas_limit.as_u64().to_formatted_string(&Locale::en));
+    info!("✔ And a gas price of: {} Wei", state.gas_price.as_u64().to_formatted_string(&Locale::en));
     info!("✔ With calldata: 0x{}", hex::encode(&state.data));
+    info!("✔ For a total price of : {} ETH", total_eth);
     EthereumTransaction::new_unsigned_transaction(
         state.to.as_bytes().to_vec(),
         state.data.clone(),
