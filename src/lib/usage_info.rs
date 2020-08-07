@@ -6,7 +6,7 @@ pub const USAGE_INFO: &str = "
 
 ❍ Info ❍
 
-A simple CLI for offline signging of ethereum transactions.
+A simple CLI for offline signing of ethereum transactions.
 
 ❍ Usage ❍
 
