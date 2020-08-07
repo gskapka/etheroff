@@ -76,7 +76,7 @@ impl State {
 }
 
 impl State {
-    pub fn add_eth_pk(mut self, eth_pk: EthereumKeys) -> Result<State> {
+    pub fn add_eth_private_key(mut self, eth_pk: EthereumKeys) -> Result<State> {
         match self.eth_pk {
             Some(_) => Err(AppError::Custom(get_no_overwrite_state_err("eth_private_key"))),
             None => {
@@ -86,7 +86,7 @@ impl State {
         }
     }
 
-    pub fn get_eth_pk(&self) -> Result<&EthereumKeys> {
+    pub fn get_eth_private_key(&self) -> Result<&EthereumKeys> {
         match &self.eth_pk {
             Some(eth_pk) => Ok(&eth_pk),
             None => Err(AppError::Custom(get_not_in_state_err("eth_pk")))

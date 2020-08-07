@@ -7,6 +7,6 @@ use crate::lib::{
     constants::TOOL_VERSION,
 };
 
-pub fn get_tool_version_info() -> Result<JsonValue> {
-    Ok(json!({"version": TOOL_VERSION }))
+pub fn get_tool_version_info() -> Result<String> {
+    Ok(TOOL_VERSION.to_string())
 }

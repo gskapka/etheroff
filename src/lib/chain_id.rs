@@ -1,5 +1,8 @@
 use crate::lib::{
-    types::Result,
+    types::{
+        Byte,
+        Result,
+    },
     errors::AppError,
 };
 
@@ -25,6 +28,10 @@ impl EthereumChainId {
             42 => Ok(EthereumChainId::Kovan),
             _ => Err(AppError::Custom(format!("✘ Unrecognised chain id: '{}'!", int)))
         }
+    }
+
+    pub fn to_byte(&self) -> Byte {
+        self.to_int() as u8
     }
 
     pub fn to_int(&self) -> usize {

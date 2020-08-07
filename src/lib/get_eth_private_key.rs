@@ -49,5 +49,5 @@ pub fn get_eth_private_key_and_add_to_state(state: State) -> Result<State> {
     check_keyfile_exists(keyfile_path)
         .and_then(|_| maybe_get_eth_private_key(keyfile_path))
         .and_then(|hex| get_eth_private_key_from_hex(&hex))
-        .and_then(|eth_pk| state.add_eth_pk(eth_pk))
+        .and_then(|eth_pk| state.add_eth_private_key(eth_pk))
 }

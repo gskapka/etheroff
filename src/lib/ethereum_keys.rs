@@ -1,18 +1,27 @@
 use tiny_keccak::keccak256;
-use ethereum_types::Address as EthAddress;
+use ethereum_types::{
+    H256,
+    Address as EthAddress,
+};
+use secp256k1::{
+    Message,
+    Secp256k1,
+    key::{
+        ONE_KEY,
+        SecretKey,
+        PublicKey,
+    },
+};
 use crate::lib::{
-    types::Result,
+    types::{
+        Byte,
+        Result,
+    },
     utils::{
+        keccak_hash_bytes,
         maybe_strip_hex_prefix,
         decode_hex_with_err_msg,
         validate_eth_private_key_hex_length,
-    },
-};
-use secp256k1::{
-    Secp256k1,
-    key::{
-        SecretKey,
-        PublicKey
     },
 };
 
@@ -51,6 +60,23 @@ impl EthereumKeys {
             .and_then(|valid_hex| decode_hex_with_err_msg(&valid_hex, "✘ Error decoding ETH private key hex!"))
             .and_then(|bytes| Ok(SecretKey::from_slice(&bytes)?))
             .map(|private_key| Self::from_private_key(&private_key))
+    }
+
+    pub fn sign_message_bytes(&self, message: &[Byte]) -> Result<[u8; 65]> {
+        self.sign_hash(keccak_hash_bytes(message))
+    }
+
+    pub fn sign_hash(&self, hash: H256) -> Result<[u8; 65]> {
+        let msg = match Message::from_slice(hash.as_bytes()) {
+            Ok(msg) => msg,
+            Err(err) => return Err(err.into()),
+        };
+        let sig = Secp256k1::sign_recoverable(&Secp256k1::new(), &msg, &self.private_key);
+        let (rec_id, data) = sig.serialize_compact();
+        let mut data_arr = [0; 65];
+        data_arr[0..64].copy_from_slice(&data[0..64]);
+        data_arr[64] = rec_id.to_i32() as u8;
+        Ok(data_arr)
     }
 }
 

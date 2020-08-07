@@ -1,4 +1,8 @@
-use ethereum_types::U256;
+use tiny_keccak::keccak256;
+use ethereum_types::{
+    U256,
+    H256
+};
 use crate::lib::{
     types::{
         Byte,
@@ -8,6 +12,10 @@ use crate::lib::{
     errors::AppError,
     constants::PRIVATE_KEY_HEX_LENGTH,
 };
+
+pub fn keccak_hash_bytes(bytes: &[Byte]) -> H256 {
+    H256::from(keccak256(&bytes[..]))
+}
 
 pub fn maybe_pad_hex(hex: &str) -> String {
     match hex.chars().count() % 2 {
