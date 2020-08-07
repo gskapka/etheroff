@@ -1,7 +1,3 @@
-use serde_json::{
-    json,
-    Value as JsonValue,
-};
 use crate::lib::{
     types::Result,
     constants::TOOL_VERSION,

@@ -1,11 +1,6 @@
 use rlp::RlpStream;
-use ethereum_types::{
-    U256,
-    Address as EthAddress,
-};
+use ethereum_types::U256;
 use crate::lib::{
-    errors::AppError,
-    utils::keccak_hash_bytes,
     ethereum_keys::EthereumKeys,
     types::{
         Byte,
@@ -82,10 +77,6 @@ impl EthereumTransaction {
         eth_private_key
             .sign_message_bytes(&self.serialize_bytes())
             .map(|signature| self.add_signature_to_transaction(signature))
-    }
-
-    pub fn get_tx_hash(&self) -> String {
-        hex::encode(keccak_hash_bytes(&self.serialize_bytes()))
     }
 
     pub fn serialize_hex(&self) -> String {

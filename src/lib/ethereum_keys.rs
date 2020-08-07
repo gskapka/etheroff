@@ -7,7 +7,6 @@ use secp256k1::{
     Message,
     Secp256k1,
     key::{
-        ONE_KEY,
         SecretKey,
         PublicKey,
     },
@@ -39,10 +38,6 @@ impl EthereumKeys {
     fn public_key_to_eth_address(public_key: &PublicKey) -> EthAddress {
         // NOTE: Need the last 20 bytes of the hash of the uncompresed form of the public key, minus it's prefix byte.
         EthAddress::from_slice(&keccak256(&public_key.serialize_uncompressed()[1..])[12..])
-    }
-
-    pub fn to_address(&self) -> EthAddress {
-        Self::public_key_to_eth_address(&Self::get_public_key_from_private_key(&self.private_key))
     }
 
     pub fn from_private_key(private_key: &SecretKey) -> Self {
