@@ -12,16 +12,17 @@ A simple CLI for offline signging of ethereum transactions.
 
 Usage:  etheroff [--help]
         etheroff version
-        etheroff signTransaction [--logLevel=<string>]
+        etheroff signTransaction [--keyfile=<path>] [--logLevel=<string>]
 
 Commands:
 
         version                ❍ Show version info.
-        signTransaction        ❍ Generate a random ethereum address.
+        signTransaction        ❍ Sign an ethereum transaction.
 
 Options:
 
         --help                 ❍ Show this message.
+        --keyfile=<path>       ❍ Path to GPG-encrypted ETH private key in hex format. [default: ./pk.gpg]
         --logLevel=<level>     ❍ Define the level of logging in the tool's output as one of: `none`, `info`, `debug`,
                                  `trace` or `error`. [default: none]
 

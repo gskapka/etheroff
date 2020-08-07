@@ -4,6 +4,7 @@ extern crate docopt;
 extern crate simplelog;
 extern crate secp256k1;
 extern crate serde_json;
+extern crate tiny_keccak;
 extern crate ethereum_types;
 #[macro_use] extern crate log;
 #[macro_use] extern crate serde_derive;
@@ -30,18 +31,11 @@ pub fn main() -> Result<()> {
         .and_then(maybe_initialize_logger_and_return_cli_args)
         .and_then(|cli_args|
             match cli_args {
-                CliArgs {cmd_signTransaction: true, ..} => {
-                    info!("✔ Signing transaction...");
-                    sign_transaction()
-                }
-                CliArgs {cmd_version: true, ..} => {
-                    info!("✔ Getting tool version info...");
-                    get_tool_version_info()
-                }
-                _ => Err(AppError::Custom(USAGE_INFO.to_string()))
+                CliArgs {cmd_version: true, ..} => get_tool_version_info(),
+                CliArgs {cmd_signTransaction: true, ..} => sign_transaction(cli_args),
+                _ => Err(AppError::Custom(USAGE_INFO.to_string())),
             }
         ) {
-
             Ok(json) => {
                 println!("{}", json);
                 Ok(())
@@ -52,4 +46,3 @@ pub fn main() -> Result<()> {
             }
         }
 }
-
