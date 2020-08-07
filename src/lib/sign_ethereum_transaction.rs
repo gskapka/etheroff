@@ -2,16 +2,9 @@ use num_format::{
     Locale,
     ToFormattedString
 };
-use ethereum_types::{
-    U256,
-    Address as EthAddress,
-};
 use crate::lib::{
-    types::{
-        Bytes,
-        Result,
-    },
     state::State,
+    types::Result,
     get_cli_args::CliArgs,
     ethereum_transaction::EthereumTransaction,
     decrypt_ethereum_private_key::decrypt_ethereum_private_key_and_add_to_state,

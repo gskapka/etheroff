@@ -16,10 +16,6 @@ pub enum EthereumChainId {
 }
 
 impl EthereumChainId {
-    pub fn default() -> Self {
-        EthereumChainId::Mainnet
-    }
-
     pub fn from_int(int: &usize) -> Result<Self> {
         match int {
             1 => Ok(EthereumChainId::Mainnet),

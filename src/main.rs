@@ -3,7 +3,6 @@
 extern crate docopt;
 extern crate simplelog;
 extern crate secp256k1;
-extern crate serde_json;
 extern crate tiny_keccak;
 extern crate ethereum_types;
 #[macro_use] extern crate log;
@@ -11,7 +10,6 @@ extern crate ethereum_types;
 
 mod lib;
 
-use serde_json::json;
 use crate::lib::{
     types::Result,
     errors::AppError,
