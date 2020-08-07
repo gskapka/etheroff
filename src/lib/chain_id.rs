@@ -1,3 +1,4 @@
+use std::fmt;
 use crate::lib::{
     types::{
         Byte,
@@ -7,21 +8,21 @@ use crate::lib::{
 };
 
 pub enum EthereumChainId {
-    Mainet,
-    Rinkeby,
-    Ropsten,
     Kovan,
     Goerli,
+    Mainnet,
+    Rinkeby,
+    Ropsten,
 }
 
 impl EthereumChainId {
     pub fn default() -> Self {
-        EthereumChainId::Mainet
+        EthereumChainId::Mainnet
     }
 
     pub fn from_int(int: &usize) -> Result<Self> {
         match int {
-            1 => Ok(EthereumChainId::Mainet),
+            1 => Ok(EthereumChainId::Mainnet),
             3 => Ok(EthereumChainId::Ropsten),
             4 => Ok(EthereumChainId::Rinkeby),
             5 => Ok(EthereumChainId::Goerli),
@@ -36,11 +37,23 @@ impl EthereumChainId {
 
     pub fn to_int(&self) -> usize {
         match self {
-            EthereumChainId::Mainet => 1,
+            EthereumChainId::Mainnet => 1,
             EthereumChainId::Ropsten => 3,
             EthereumChainId::Rinkeby => 4,
             EthereumChainId::Goerli => 5,
             EthereumChainId::Kovan => 42,
+        }
+    }
+}
+
+impl fmt::Display for EthereumChainId {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            EthereumChainId::Mainnet => write!(f, "Mainnet"),
+            EthereumChainId::Kovan => write!(f, "Kovan Testnet"),
+            EthereumChainId::Goerli => write!(f, "Goerli Testnet"),
+            EthereumChainId::Ropsten => write!(f, "Ropsten Testnet"),
+            EthereumChainId::Rinkeby => write!(f, "Rinkeby Testnet"),
         }
     }
 }
