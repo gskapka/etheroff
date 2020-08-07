@@ -2,6 +2,7 @@ use crate::lib::{
     types::Result,
     errors::AppError,
     get_cli_args::CliArgs,
+    chain_id::EthereumChainId,
     ethereum_keys::EthereumKeys,
 };
 
@@ -15,14 +16,16 @@ fn get_not_in_state_err(substring: &str) -> String {
 
 pub struct State {
     pub cli_args: CliArgs,
+    pub chain_id: EthereumChainId,
     pub eth_pk: Option<EthereumKeys>,
 }
 
 impl State {
     pub fn init_from_cli_args(cli_args: CliArgs) -> Result<State> {
         Ok(State {
-            cli_args,
             eth_pk: None,
+            chain_id: EthereumChainId::from_int(&cli_args.flag_chainId)?,
+            cli_args,
         })
     }
  }

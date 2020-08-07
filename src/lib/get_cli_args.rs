@@ -9,6 +9,7 @@ use crate::lib::{
 #[derive(Clone, Debug, Deserialize, PartialEq)]
 pub struct CliArgs {
     pub cmd_version: bool,
+    pub flag_chainId: usize,
     pub flag_keyfile: String,
     pub flag_logLevel: String,
     pub cmd_signTransaction: bool,
