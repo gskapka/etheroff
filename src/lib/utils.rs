@@ -9,6 +9,13 @@ use crate::lib::{
     constants::PRIVATE_KEY_HEX_LENGTH,
 };
 
+pub fn maybe_pad_hex(hex: &str) -> String {
+    match hex.chars().count() % 2 {
+        0 => hex.to_string(),
+        _ => format!("0{}", hex),
+    }
+}
+
 pub fn convert_dec_str_to_u256_with_err_msg(dec_str: &str, err_msg: &str) -> Result<U256> {
     match U256::from_dec_str(dec_str) {
         Ok(u256) => Ok(u256),

@@ -12,6 +12,7 @@ pub struct CliArgs {
     pub arg_nonce: String,
     pub arg_value: String,
     pub cmd_version: bool,
+    pub flag_data: String,
     pub flag_chainId: usize,
     pub flag_keyfile: String,
     pub flag_gasLimit: String,

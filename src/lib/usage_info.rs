@@ -12,7 +12,7 @@ A simple CLI for offline signging of ethereum transactions.
 
 Usage:  etheroff [--help]
         etheroff version
-        etheroff signTransaction <to> <value> <nonce> [--gasLimit=<uint>] [--gasPrice=<uint>] [--chainId=<uint>] [--keyfile=<path>] [--logLevel=<string>]
+        etheroff signTransaction <to> <value> <nonce> [--gasLimit=<uint>] [--gasPrice=<uint>] [--data=<bytes>] [--chainId=<uint>] [--keyfile=<path>] [--logLevel=<string>]
 
 Commands:
 
@@ -27,6 +27,7 @@ Options:
         --help                 ❍ Show this message.
         --keyfile=<path>       ❍ Path to GPG-encrypted ETH private key in hex format. [default: ./pk.gpg]
         --chainId=<uint>       ❍ The integer used to identify which chain to sign a transaction for.  [default: 1]
+        --data=<bytes>         ❍ Any calldata required for the transaction, in hex format. [default: 0x]
         --gasLimit=<uint>      ❍ The gas limit for the ETH transaction. [default: 21000]
         --gasPrice=<uint>      ❍ The gas price for the ETH transaction. [default: 20000000000]
         --logLevel=<level>     ❍ Define the level of logging in the tool's output as one of: `none`, `info`, `debug`,
