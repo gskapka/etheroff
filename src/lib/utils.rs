@@ -1,3 +1,4 @@
+use ethereum_types::U256;
 use crate::lib::{
     types::{
         Byte,
@@ -7,6 +8,13 @@ use crate::lib::{
     errors::AppError,
     constants::PRIVATE_KEY_HEX_LENGTH,
 };
+
+pub fn convert_dec_str_to_u256_with_err_msg(dec_str: &str, err_msg: &str) -> Result<U256> {
+    match U256::from_dec_str(dec_str) {
+        Ok(u256) => Ok(u256),
+        Err(_) => Err(AppError::Custom(err_msg.to_string())),
+    }
+}
 
 fn strip_new_lines_from_str(string: String) -> String {
     string.replace("\n", "")

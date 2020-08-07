@@ -1,10 +1,14 @@
-use ethereum_types::Address as EthAddress;
+use ethereum_types::{
+    U256,
+    Address as EthAddress,
+};
 use crate::lib::{
     types::Result,
     errors::AppError,
     get_cli_args::CliArgs,
     chain_id::EthereumChainId,
     ethereum_keys::EthereumKeys,
+    utils::convert_dec_str_to_u256_with_err_msg,
     ethereum_address::get_ethereum_address_from_hex_string,
 };
 
@@ -17,6 +21,7 @@ fn get_not_in_state_err(substring: &str) -> String {
 }
 
 pub struct State {
+    pub nonce: U256,
     pub to: EthAddress,
     pub cli_args: CliArgs,
     pub chain_id: EthereumChainId,
@@ -29,6 +34,10 @@ impl State {
             eth_pk: None,
             to: get_ethereum_address_from_hex_string(&cli_args.arg_to)?,
             chain_id: EthereumChainId::from_int(&cli_args.flag_chainId)?,
+            nonce: convert_dec_str_to_u256_with_err_msg(
+                &cli_args.arg_nonce,
+                &format!("✘ Could not arg of '{}' to a nonce correctly!", &cli_args.arg_nonce),
+            )?,
             cli_args,
         })
     }
