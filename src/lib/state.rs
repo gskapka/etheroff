@@ -1,9 +1,11 @@
+use ethereum_types::Address as EthAddress;
 use crate::lib::{
     types::Result,
     errors::AppError,
     get_cli_args::CliArgs,
     chain_id::EthereumChainId,
     ethereum_keys::EthereumKeys,
+    ethereum_address::get_ethereum_address_from_hex_string,
 };
 
 fn get_no_overwrite_state_err(substring: &str) -> String {
@@ -15,6 +17,7 @@ fn get_not_in_state_err(substring: &str) -> String {
 }
 
 pub struct State {
+    pub to: EthAddress,
     pub cli_args: CliArgs,
     pub chain_id: EthereumChainId,
     pub eth_pk: Option<EthereumKeys>,
@@ -24,6 +27,7 @@ impl State {
     pub fn init_from_cli_args(cli_args: CliArgs) -> Result<State> {
         Ok(State {
             eth_pk: None,
+            to: get_ethereum_address_from_hex_string(&cli_args.arg_to)?,
             chain_id: EthereumChainId::from_int(&cli_args.flag_chainId)?,
             cli_args,
         })

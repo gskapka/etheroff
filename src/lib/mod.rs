@@ -1,5 +1,5 @@
-pub(crate) mod types;
 pub(crate) mod utils;
+pub(crate) mod types;
 pub(crate) mod state;
 pub(crate) mod errors;
 pub(crate) mod chain_id;
@@ -7,6 +7,7 @@ pub(crate) mod constants;
 pub(crate) mod usage_info;
 pub(crate) mod get_cli_args;
 pub(crate) mod ethereum_keys;
+pub(crate) mod ethereum_address;
 pub(crate) mod sign_transaction;
 pub(crate) mod initialize_logger;
 pub(crate) mod get_eth_private_key;

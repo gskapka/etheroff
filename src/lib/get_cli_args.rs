@@ -8,6 +8,7 @@ use crate::lib::{
 #[allow(non_snake_case)]
 #[derive(Clone, Debug, Deserialize, PartialEq)]
 pub struct CliArgs {
+    pub arg_to: String,
     pub cmd_version: bool,
     pub flag_chainId: usize,
     pub flag_keyfile: String,
