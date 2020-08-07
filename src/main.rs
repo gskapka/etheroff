@@ -41,7 +41,7 @@ pub fn main() -> Result<()> {
                 Ok(())
             },
             Err(err) => {
-                println!("{}", json!({"error": err.to_string()}).to_string());
+                println!("{}", err);
                 std::process::exit(1);
             }
         }

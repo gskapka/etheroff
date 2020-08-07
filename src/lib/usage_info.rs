@@ -12,7 +12,7 @@ A simple CLI for offline signging of ethereum transactions.
 
 Usage:  etheroff [--help]
         etheroff version
-        etheroff signTransaction <to> <nonce> [--chainId=<uint>] [--keyfile=<path>] [--logLevel=<string>]
+        etheroff signTransaction <to> <value> <nonce> [--chainId=<uint>] [--keyfile=<path>] [--logLevel=<string>]
 
 Commands:
 
@@ -20,6 +20,7 @@ Commands:
         signTransaction        ❍ Sign an ethereum transaction.
         <to>                   ❍ Ethereum address to send the transaction to.
         <nonce>                ❍ The nonce to be used for the ethereum transaction.
+        <value>                ❍ How much ether to send (in Wei!)
 
 Options:
 

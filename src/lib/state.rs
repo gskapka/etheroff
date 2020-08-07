@@ -22,6 +22,7 @@ fn get_not_in_state_err(substring: &str) -> String {
 
 pub struct State {
     pub nonce: U256,
+    pub value: U256,
     pub to: EthAddress,
     pub cli_args: CliArgs,
     pub chain_id: EthereumChainId,
@@ -36,12 +37,16 @@ impl State {
             chain_id: EthereumChainId::from_int(&cli_args.flag_chainId)?,
             nonce: convert_dec_str_to_u256_with_err_msg(
                 &cli_args.arg_nonce,
-                &format!("✘ Could not arg of '{}' to a nonce correctly!", &cli_args.arg_nonce),
+                &format!("✘ Could not parse arg of '{}' to a U256 nonce correctly!", &cli_args.arg_nonce),
+            )?,
+            value: convert_dec_str_to_u256_with_err_msg(
+                &cli_args.arg_nonce,
+                &format!("✘ Could not parse arg of '{}' to a U256 value correctly!", &cli_args.arg_nonce),
             )?,
             cli_args,
         })
     }
- }
+}
 
 impl State {
     pub fn add_eth_pk(mut self, eth_pk: EthereumKeys) -> Result<State> {
