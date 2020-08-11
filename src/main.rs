@@ -1,4 +1,6 @@
+#![feature(try_trait)]
 #![allow(clippy::match_bool)]
+#![allow(clippy::too_many_arguments)]
 
 extern crate docopt;
 extern crate simplelog;
