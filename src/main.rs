@@ -9,6 +9,7 @@ extern crate ethereum_types;
 #[macro_use] extern crate serde_derive;
 
 mod lib;
+mod test_utils;
 
 use crate::lib::{
     types::Result,
