@@ -7,6 +7,7 @@ pub enum AppError {
     CryptoError(secp256k1::Error),
     UTF8Error(std::str::Utf8Error),
     NoneError(std::option::NoneError),
+    FromDecStrError(ethereum_types::FromDecStrErr),
 }
 
 impl fmt::Display for AppError {
@@ -17,6 +18,7 @@ impl fmt::Display for AppError {
             AppError::UTF8Error(ref e) => format!("✘ UTF8 error: {}", e),
             AppError::NoneError(ref e) => format!("✘ None error: {:?}", e),
             AppError::CryptoError(ref e) => format!("✘ Crypto error: {}", e),
+            AppError::FromDecStrError(ref e) => format!("✘ From decimal string error: {:?}", e),
 
         };
         f.write_fmt(format_args!("{}", msg))
@@ -44,5 +46,11 @@ impl From<std::io::Error> for AppError {
 impl From<std::option::NoneError> for AppError {
     fn from(e: std::option::NoneError) -> AppError {
         AppError::NoneError(e)
+    }
+}
+
+impl From<ethereum_types::FromDecStrErr> for AppError {
+    fn from(e: ethereum_types::FromDecStrErr) -> AppError {
+        AppError::FromDecStrError(e)
     }
 }
