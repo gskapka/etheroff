@@ -10,12 +10,14 @@ A simple CLI for offline signing of ethereum transactions.
 
 ❍ Usage ❍
 
-Usage:  etheroff [--help]
+Usage:  etheroff [--keyfile=<path>]
+        etheroff [--help]
         etheroff version
         etheroff signTransaction <to> <value> <nonce> [--gasLimit=<uint>] [--gasPrice=<uint>] [--data=<bytes>] [--chainId=<uint>] [--keyfile=<path>] [--logLevel=<string>]
 
 Commands:
 
+        <no-command>           ❍ Run the interactive Q&A version of this tool.
         version                ❍ Show version info.
         signTransaction        ❍ Sign an ethereum transaction.
         <to>                   ❍ Ethereum address to send the transaction to.
