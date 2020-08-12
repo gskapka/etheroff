@@ -10,10 +10,10 @@ use crate::lib::{
     },
 };
 
-fn check_keyfile_exists(keyfile_path: &str) -> Result<()> {
+pub fn check_keyfile_exists(keyfile_path: &str) -> Result<()> {
     info!("✔ Checking ETH private keyfile exists...");
     match file_exists(&keyfile_path) {
-        false => Err(AppError::Custom(format!("✘ ETH keyfile not found @ path: '{}'!", keyfile_path))),
+        false => Err(AppError::Custom(format!("✘ ETH keyfile not found @ path: {}!", keyfile_path))),
         true => {
             info!("✔ Key file found @ {}!", keyfile_path);
             Ok(())
@@ -21,7 +21,7 @@ fn check_keyfile_exists(keyfile_path: &str) -> Result<()> {
     }
 }
 
-fn maybe_decrypt_ethereum_private_key(keyfile_path: &str) -> Result<String> {
+pub fn maybe_decrypt_ethereum_private_key(keyfile_path: &str) -> Result<String> {
     info!("✔ Decrypting private key...");
     let output = Command::new("gpg").arg("-d").arg(keyfile_path).output()?;
     match output.stdout.len() {
@@ -36,7 +36,7 @@ fn maybe_decrypt_ethereum_private_key(keyfile_path: &str) -> Result<String> {
     }
 }
 
-fn get_eth_private_key_from_hex(hex: &str) -> Result<EthereumKeys> {
+pub fn get_eth_private_key_from_hex(hex: &str) -> Result<EthereumKeys> {
     info!("✔ Creating Eth private key from hex...");
     let eth_pk = EthereumKeys::from_hex_private_key(&hex)?;
     info!("✔ ETH address: 0x{}", &eth_pk.address_string);
