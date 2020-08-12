@@ -8,6 +8,7 @@ extern crate secp256k1;
 extern crate tiny_keccak;
 extern crate ethereum_types;
 #[macro_use] extern crate log;
+#[macro_use] extern crate lazy_static;
 #[macro_use] extern crate serde_derive;
 
 mod lib;

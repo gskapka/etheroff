@@ -194,6 +194,7 @@ dependencies = [
  "docopt",
  "ethereum-types",
  "hex",
+ "lazy_static",
  "log",
  "num-format",
  "rand",
