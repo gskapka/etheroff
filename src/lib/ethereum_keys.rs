@@ -24,6 +24,7 @@ use crate::lib::{
     },
 };
 
+#[derive(Clone)]
 pub struct EthereumKeys {
     private_key: SecretKey,
     pub address: EthAddress,
