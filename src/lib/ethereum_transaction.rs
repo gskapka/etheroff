@@ -83,3 +83,37 @@ impl EthereumTransaction {
         hex::encode(self.serialize_bytes())
     }
 }
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::test_utils::{
+        get_sample_eth_address,
+        get_sample_ethereum_keys,
+    };
+
+    #[test]
+    fn should_sign_transaction() {
+        let expected_result = "f869820539850df847580082753094fedfe2616eb3661cb8fed2782f5f0cc91d59dcac01830decaf2aa0c8a9434fa0775488d27f5395bcd4e1180b0b67800d58bc3a69f1e9071e45d3eba06084d3d8e723188c441403e0ecd6d7cd894346730a28d557eda393fc2eb0fda3";
+        let pk = get_sample_ethereum_keys();
+        let to = get_sample_eth_address().as_bytes().to_vec();
+        let chain_id = 3u8;
+        let data = hex::decode("0decaf").unwrap();
+        let value: U256 = 1.into();
+        let nonce: U256 = 1337.into();
+        let gas_limit: U256 = 30000.into();
+        let gas_price = U256::from_dec_str("60000000000").unwrap();
+        let unsigned_tx = EthereumTransaction::new_unsigned_transaction(
+            to,
+            data,
+            nonce,
+            value,
+            chain_id,
+            gas_limit,
+            gas_price,
+        );
+        let result = unsigned_tx.sign(&pk).unwrap().serialize_hex();
+        assert_eq!(result, expected_result);
+    }
+}

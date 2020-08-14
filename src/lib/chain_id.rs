@@ -7,6 +7,7 @@ use crate::lib::{
     errors::AppError,
 };
 
+#[derive(Clone, Copy)]
 pub enum EthereumChainId {
     Kovan,
     Goerli,
@@ -38,6 +39,17 @@ impl EthereumChainId {
             EthereumChainId::Rinkeby => 4,
             EthereumChainId::Goerli => 5,
             EthereumChainId::Kovan => 42,
+        }
+    }
+
+    pub fn from_str(chain_str: &str) -> Result<Self> {
+        match chain_str {
+            "Kovan" | "kovan" => Ok(EthereumChainId::Kovan),
+            "Goerli" | "goerli" => Ok(EthereumChainId::Goerli),
+            "Mainnet" | "mainnet" => Ok(EthereumChainId::Mainnet),
+            "Ropsten" | "ropsten" => Ok(EthereumChainId::Ropsten),
+            "Rinkeby" | "rinkeby" => Ok(EthereumChainId::Rinkeby),
+            _ => Err(AppError::Custom(format!("✘ Unrecognised chain: '{}'!", chain_str)))
         }
     }
 }

@@ -41,12 +41,26 @@ pub struct State {
 }
 
 impl State {
+    pub fn init(
+        eth_pk: Option<EthereumKeys>,
+        to: EthAddress,
+        chain_id: EthereumChainId,
+        data: Bytes,
+        nonce: U256,
+        value: U256,
+        gas_limit: U256,
+        gas_price: U256,
+        cli_args: CliArgs,
+    ) -> State {
+        State { nonce, value, data, to, gas_limit, gas_price, cli_args, chain_id, eth_pk }
+    }
+
     pub fn init_from_cli_args(cli_args: CliArgs) -> Result<State> {
-        Ok(State {
-            eth_pk: None,
-            to: get_ethereum_address_from_hex_string(&cli_args.arg_to)?,
-            chain_id: EthereumChainId::from_int(&cli_args.flag_chainId)?,
-            data: maybe_strip_hex_prefix(&cli_args.flag_data)
+        Ok(State::init(
+            None,
+            get_ethereum_address_from_hex_string(&cli_args.arg_to)?,
+            EthereumChainId::from_int(&cli_args.flag_chainId)?,
+            maybe_strip_hex_prefix(&cli_args.flag_data)
                 .map(|hex_no_prefix| maybe_pad_hex(&hex_no_prefix))
                 .and_then(|padded_hex|
                     decode_hex_with_err_msg(
@@ -54,24 +68,24 @@ impl State {
                         &format!("✘ Could not parse arg of '{}' to a bytes correctly!", &cli_args.flag_data),
                     )
                 )?,
-            nonce: convert_dec_str_to_u256_with_err_msg(
+            convert_dec_str_to_u256_with_err_msg(
                 &cli_args.arg_nonce,
                 &format!("✘ Could not parse arg of '{}' to a U256 nonce correctly!", &cli_args.arg_nonce),
             )?,
-            value: convert_dec_str_to_u256_with_err_msg(
+            convert_dec_str_to_u256_with_err_msg(
                 &cli_args.arg_value,
                 &format!("✘ Could not parse arg of '{}' to a U256 value correctly!", &cli_args.arg_value),
             )?,
-            gas_limit: convert_dec_str_to_u256_with_err_msg(
+            convert_dec_str_to_u256_with_err_msg(
                 &cli_args.flag_gasLimit,
                 &format!("✘ Could not parse arg of '{}' to a U256 gas limit correctly!", &cli_args.flag_gasLimit),
             )?,
-            gas_price: convert_dec_str_to_u256_with_err_msg(
+            convert_dec_str_to_u256_with_err_msg(
                 &cli_args.flag_gasPrice,
                 &format!("✘ Could not parse arg of '{}' to a U256 gas price correctly!", &cli_args.flag_gasPrice),
             )?,
             cli_args,
-        })
+        ))
     }
 }
 

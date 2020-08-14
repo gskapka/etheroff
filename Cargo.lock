@@ -77,9 +77,9 @@ checksum = "08c48aae112d48ed9f069b33538ea9e3e90aa263cfa3d1c24309612b1f7472de"
 
 [[package]]
 name = "cc"
-version = "1.0.41"
+version = "1.0.58"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8dae9c4b8fedcae85592ba623c4fd08cfdab3e3b72d6df780c6ead964a69bfff"
+checksum = "f9a06fb2e53271d7c279ec1efea6ab691c35a2ae67ec0d91d7acec0caf13b518"
 
 [[package]]
 name = "cfg-if"
@@ -189,11 +189,12 @@ dependencies = [
 
 [[package]]
 name = "etheroff"
-version = "1.0.0"
+version = "2.1.0"
 dependencies = [
  "docopt",
  "ethereum-types",
  "hex",
+ "lazy_static",
  "log",
  "num-format",
  "rand",

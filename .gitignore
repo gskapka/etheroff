@@ -1,3 +1,4 @@
 *.sw*
-*.gpg
 /target
+*.gpg
+!/example/example-private-key.gpg

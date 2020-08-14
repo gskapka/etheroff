@@ -24,6 +24,7 @@ use crate::lib::{
     },
 };
 
+#[derive(Clone)]
 pub struct EthereumKeys {
     private_key: SecretKey,
     pub address: EthAddress,
@@ -78,19 +79,11 @@ impl EthereumKeys {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use secp256k1::key::SecretKey;
-
-    fn get_sample_private_key_hex() -> String {
-        "decaffb75a41481965e391fb6d4406b6c356d20194c5a88935151f0513c0ffee".to_string()
-    }
-
-    fn get_sample_private_key() -> SecretKey {
-        SecretKey::from_slice(&hex::decode(&get_sample_private_key_hex()).unwrap()).unwrap()
-    }
+    use crate::test_utils::get_sample_private_key;
 
     #[test]
     fn should_create_etherem_keys_from_private_key() {
-        let expected_address = "3eea9f85661bac934637b8407f9361caa14f5163";
+        let expected_address = "d4f003e122e94982164f3d63ff68467e5c676e9e";
         let pk = get_sample_private_key();
         let result = EthereumKeys::from_private_key(&pk);
         assert_eq!(result.address_string, expected_address);
