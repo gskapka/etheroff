@@ -10,6 +10,7 @@ use crate::lib::{
 #[derive(Clone, Copy)]
 pub enum EthereumChainId {
     Kovan,
+    Matic,
     Goerli,
     Mainnet,
     Rinkeby,
@@ -24,6 +25,7 @@ impl EthereumChainId {
             4 => Ok(EthereumChainId::Rinkeby),
             5 => Ok(EthereumChainId::Goerli),
             42 => Ok(EthereumChainId::Kovan),
+            137 => Ok(EthereumChainId::Matic),
             _ => Err(AppError::Custom(format!("✘ Unrecognised chain id: '{}'!", int)))
         }
     }
@@ -39,11 +41,13 @@ impl EthereumChainId {
             EthereumChainId::Rinkeby => 4,
             EthereumChainId::Goerli => 5,
             EthereumChainId::Kovan => 42,
+            EthereumChainId::Matic => 137,
         }
     }
 
     pub fn from_str(chain_str: &str) -> Result<Self> {
         match chain_str {
+            "Matic" | "matic" => Ok(EthereumChainId::Matic),
             "Kovan" | "kovan" => Ok(EthereumChainId::Kovan),
             "Goerli" | "goerli" => Ok(EthereumChainId::Goerli),
             "Mainnet" | "mainnet" => Ok(EthereumChainId::Mainnet),
@@ -59,6 +63,7 @@ impl fmt::Display for EthereumChainId {
         match self {
             EthereumChainId::Mainnet => write!(f, "Mainnet"),
             EthereumChainId::Kovan => write!(f, "Kovan Testnet"),
+            EthereumChainId::Matic => write!(f, "Matic Mainnet"),
             EthereumChainId::Goerli => write!(f, "Goerli Testnet"),
             EthereumChainId::Ropsten => write!(f, "Ropsten Testnet"),
             EthereumChainId::Rinkeby => write!(f, "Rinkeby Testnet"),
