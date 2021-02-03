@@ -54,8 +54,8 @@ impl EthereumTransaction {
         self
     }
 
-    fn calculate_v_from_chain_id(sig_v: u8, chain_id: u8) -> u64 {
-        ((chain_id * 2) + (sig_v + 35)).into() // Per EIP155
+    fn calculate_v_from_chain_id(parity_of_y: u8, chain_id: u8) -> u64 {
+        chain_id as u64 * 2 + parity_of_y as u64 + 35
     }
 
     pub fn serialize_bytes(&self) -> Bytes {
