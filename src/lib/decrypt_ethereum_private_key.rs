@@ -1,23 +1,24 @@
 use std::process::Command;
+
 use crate::lib::{
-    state::State,
-    types::Result,
     errors::AppError,
     ethereum_keys::EthereumKeys,
-    utils::{
-        file_exists,
-        convert_bytes_to_string_with_no_new_lines,
-    },
+    state::State,
+    types::Result,
+    utils::{convert_bytes_to_string_with_no_new_lines, file_exists},
 };
 
 pub fn check_keyfile_exists(keyfile_path: &str) -> Result<()> {
     info!("✔ Checking ETH private keyfile exists...");
     match file_exists(&keyfile_path) {
-        false => Err(AppError::Custom(format!("✘ ETH keyfile not found @ path: {}!", keyfile_path))),
+        false => Err(AppError::Custom(format!(
+            "✘ ETH keyfile not found @ path: {}!",
+            keyfile_path
+        ))),
         true => {
             info!("✔ Key file found @ {}!", keyfile_path);
             Ok(())
-        }
+        },
     }
 }
 
@@ -27,12 +28,14 @@ pub fn maybe_decrypt_ethereum_private_key(keyfile_path: &str) -> Result<String> 
     match output.stdout.len() {
         0 => {
             info!("✘ Error decrypting keyfile!");
-            Err(AppError::Custom(convert_bytes_to_string_with_no_new_lines(&output.stderr)?))
-        }
+            Err(AppError::Custom(convert_bytes_to_string_with_no_new_lines(
+                &output.stderr,
+            )?))
+        },
         _ => {
             info!("✔ Keyfile decrypted!");
             convert_bytes_to_string_with_no_new_lines(&output.stdout)
-        }
+        },
     }
 }
 

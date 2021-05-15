@@ -19,7 +19,6 @@ impl fmt::Display for AppError {
             AppError::NoneError(ref e) => format!("✘ None error: {:?}", e),
             AppError::CryptoError(ref e) => format!("✘ Crypto error: {}", e),
             AppError::FromDecStrError(ref e) => format!("✘ From decimal string error: {:?}", e),
-
         };
         f.write_fmt(format_args!("{}", msg))
     }

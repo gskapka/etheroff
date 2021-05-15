@@ -1,4 +1,5 @@
 use std::result;
+
 use crate::lib::errors::AppError;
 
 pub type Byte = u8;

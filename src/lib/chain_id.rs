@@ -1,10 +1,8 @@
 use std::fmt;
+
 use crate::lib::{
-    types::{
-        Byte,
-        Result,
-    },
     errors::AppError,
+    types::{Byte, Result},
 };
 
 #[derive(Clone, Copy)]
@@ -26,15 +24,15 @@ impl EthereumChainId {
             5 => Ok(EthereumChainId::Goerli),
             42 => Ok(EthereumChainId::Kovan),
             137 => Ok(EthereumChainId::Matic),
-            _ => Err(AppError::Custom(format!("✘ Unrecognised chain id: '{}'!", int)))
+            _ => Err(AppError::Custom(format!("✘ Unrecognised chain id: '{}'!", int))),
         }
     }
 
-    pub fn to_byte(&self) -> Byte {
+    pub fn to_byte(self) -> Byte {
         self.to_int() as u8
     }
 
-    pub fn to_int(&self) -> usize {
+    pub fn to_int(self) -> usize {
         match self {
             EthereumChainId::Mainnet => 1,
             EthereumChainId::Ropsten => 3,
@@ -53,7 +51,7 @@ impl EthereumChainId {
             "Mainnet" | "mainnet" => Ok(EthereumChainId::Mainnet),
             "Ropsten" | "ropsten" => Ok(EthereumChainId::Ropsten),
             "Rinkeby" | "rinkeby" => Ok(EthereumChainId::Rinkeby),
-            _ => Err(AppError::Custom(format!("✘ Unrecognised chain: '{}'!", chain_str)))
+            _ => Err(AppError::Custom(format!("✘ Unrecognised chain: '{}'!", chain_str))),
         }
     }
 }

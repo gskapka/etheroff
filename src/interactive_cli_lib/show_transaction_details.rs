@@ -1,9 +1,6 @@
 use crate::{
-    lib::{
-        types::Result,
-        constants::ONE_ETH_IN_WEI,
-    },
     interactive_cli_lib::state::InteractiveCliState,
+    lib::{constants::ONE_ETH_IN_WEI, types::Result},
 };
 
 pub fn show_transaction_details(state: InteractiveCliState) -> Result<InteractiveCliState> {
@@ -17,9 +14,15 @@ pub fn show_transaction_details(state: InteractiveCliState) -> Result<Interactiv
     println!("Amount:     {} Ξ ({} Wei)", &state.eth_amount.clone()?, amount_in_wei);
     println!("Nonce:      {}", &state.eth_nonce?);
     println!("Gas limit:  {}", gas_limit_wei);
-    println!("Gas price:  {} GWei ({} Wei)", &state.eth_gas_price_gwei?, gas_price_in_wei);
+    println!(
+        "Gas price:  {} GWei ({} Wei)",
+        &state.eth_gas_price_gwei?, gas_price_in_wei
+    );
     println!("Network:    {}", &state.eth_network?);
-    println!("Calldata:   {}", format!("0x{}", hex::encode(&state.eth_calldata.clone()?)));
+    println!(
+        "Calldata:   {}",
+        format!("0x{}", hex::encode(&state.eth_calldata.clone()?))
+    );
     println!("Total cost: {} Ξ ({} Wei)", total_cost_in_eth, total_cost_in_wei);
     Ok(state)
 }

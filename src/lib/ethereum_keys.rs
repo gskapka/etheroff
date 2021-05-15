@@ -1,27 +1,14 @@
-use tiny_keccak::keccak256;
-use ethereum_types::{
-    H256,
-    Address as EthAddress,
-};
+use ethereum_types::{Address as EthAddress, H256};
 use secp256k1::{
+    key::{PublicKey, SecretKey},
     Message,
     Secp256k1,
-    key::{
-        SecretKey,
-        PublicKey,
-    },
 };
+use tiny_keccak::keccak256;
+
 use crate::lib::{
-    types::{
-        Byte,
-        Result,
-    },
-    utils::{
-        keccak_hash_bytes,
-        maybe_strip_hex_prefix,
-        decode_hex_with_err_msg,
-        validate_eth_private_key_hex_length,
-    },
+    types::{Byte, Result},
+    utils::{decode_hex_with_err_msg, keccak_hash_bytes, maybe_strip_hex_prefix, validate_eth_private_key_hex_length},
 };
 
 #[derive(Clone)]

@@ -1,6 +1,7 @@
 #![cfg(test)]
-use secp256k1::key::SecretKey;
 use ethereum_types::Address as EthAddress;
+use secp256k1::key::SecretKey;
+
 use crate::lib::ethereum_keys::EthereumKeys;
 
 pub fn get_sample_private_key_hex() -> String {

@@ -1,9 +1,6 @@
 use crate::{
+    interactive_cli_lib::{state::InteractiveCliState, utils::get_user_input},
     lib::types::Result,
-    interactive_cli_lib::{
-        utils::get_user_input,
-        state::InteractiveCliState,
-    }
 };
 
 pub fn get_eth_amount_from_user(state: InteractiveCliState) -> Result<InteractiveCliState> {
