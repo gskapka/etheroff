@@ -4,10 +4,6 @@ A simple CLI for offline signing of ethereum transactions.
 
 &nbsp;
 
-***
-
-&nbsp;
-
 ## :page_with_curl: Build Instructions
 
 **1)** Clone the repo:
@@ -24,12 +20,7 @@ __`❍ cd ./target/release`__
 
 &nbsp;
 
-***
-
-&nbsp;
-
 ## :wrench: Usage Instructions
-
 
 :exclamation: __NOTE:__ This tool requires you have a __[gpg encrypted](https://www.howtogeek.com/427982/how-to-encrypt-and-decrypt-files-with-gpg-on-linux/)__ ethereum private key in __hex format__. There is a sample private key in the __`./example`__ directory which is symmetrically encrypted with the password __`etheroff`__ for you to use to experiment with the tool!
 
@@ -72,10 +63,6 @@ Options:
         --logLevel=<level>     ❍ Define the level of logging in the tool's output as one of: `none`, `info`, `debug`,
                                  `trace` or `error`. [default: none]
 ```
-
-&nbsp;
-
-***
 
 &nbsp;
 
@@ -127,10 +114,6 @@ Total cost: 1 Ξ (1231260000000000000 Wei)
 y
 f86e820539850df847580082520894fedfe2616eb3661cb8fed2782f5f0cc91d59dcac881111d67bb1bb00008026a09d76015c4eda9937b84c0e02045bbeedf2498c24e8a1f4a04e8c9e5208de5078a04a97a0e04a20161c32b7e99b1e5a9af309e95a2988edeca6b39401d2435949e2
 ```
-
-&nbsp;
-
-***
 
 &nbsp;
 
