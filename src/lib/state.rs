@@ -2,7 +2,6 @@ use ethereum_types::{Address as EthAddress, U256};
 
 use crate::lib::{
     chain_id::EthereumChainId,
-    errors::AppError,
     ethereum_address::get_ethereum_address_from_hex_string,
     ethereum_keys::EthereumKeys,
     get_cli_args::CliArgs,
@@ -107,7 +106,7 @@ impl State {
 impl State {
     pub fn add_ethereum_private_key(mut self, eth_pk: EthereumKeys) -> Result<State> {
         match self.eth_pk {
-            Some(_) => Err(AppError::Custom(get_no_overwrite_state_err("eth_private_key"))),
+            Some(_) => Err(get_no_overwrite_state_err("eth_private_key").into()),
             None => {
                 self.eth_pk = Some(eth_pk);
                 Ok(self)
@@ -118,7 +117,7 @@ impl State {
     pub fn get_ethereum_private_key(&self) -> Result<&EthereumKeys> {
         match &self.eth_pk {
             Some(eth_pk) => Ok(&eth_pk),
-            None => Err(AppError::Custom(get_not_in_state_err("eth_pk"))),
+            None => Err(get_not_in_state_err("eth_pk").into()),
         }
     }
 }

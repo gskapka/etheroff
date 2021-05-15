@@ -2,7 +2,6 @@ use ethereum_types::U256;
 
 use crate::lib::{
     constants::{ETH_NUM_DECIMALS, ONE_GWEI},
-    errors::AppError,
     types::Result,
 };
 
@@ -25,7 +24,7 @@ pub fn get_user_input() -> Result<String> {
 fn get_u256_or_return_custom_error(dec_str: &str, err: String) -> Result<U256> {
     match U256::from_dec_str(dec_str) {
         Ok(u256) => Ok(u256),
-        Err(_) => Err(AppError::Custom(err)),
+        Err(_) => Err(err.into()),
     }
 }
 
@@ -62,7 +61,7 @@ pub fn convert_eth_amount_str_to_u256(eth_amount_str: &str) -> Result<U256> {
                     &format!("{}{}", components[0], right_pad_to_wei(&components[1])),
                     err_msg,
                 ),
-                _ => Err(AppError::Custom(err_msg)),
+                _ => Err(err_msg.into()),
             }
         },
     }
@@ -72,10 +71,7 @@ pub fn convert_eth_gas_price_gwei_to_wei(gas_price_gwei: f64) -> Result<U256> {
     let rounded = (gas_price_gwei * ONE_GWEI as f64).round() / ONE_GWEI as f64;
     match U256::from_dec_str(&format!("{}", ((rounded * ONE_GWEI as f64) as u64))) {
         Ok(u256) => Ok(u256),
-        Err(_) => Err(AppError::Custom(format!(
-            "✘ Could not convert {} to gas limit in wei!",
-            gas_price_gwei
-        ))),
+        Err(_) => Err(format!("✘ Could not convert {} to gas limit in wei!", gas_price_gwei).into()),
     }
 }
 

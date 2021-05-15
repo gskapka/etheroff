@@ -1,7 +1,6 @@
 use std::process::Command;
 
 use crate::lib::{
-    errors::AppError,
     ethereum_keys::EthereumKeys,
     state::State,
     types::Result,
@@ -11,10 +10,7 @@ use crate::lib::{
 pub fn check_keyfile_exists(keyfile_path: &str) -> Result<()> {
     info!("✔ Checking ETH private keyfile exists...");
     match file_exists(&keyfile_path) {
-        false => Err(AppError::Custom(format!(
-            "✘ ETH keyfile not found @ path: {}!",
-            keyfile_path
-        ))),
+        false => Err(format!("✘ ETH keyfile not found @ path: {}!", keyfile_path).into()),
         true => {
             info!("✔ Key file found @ {}!", keyfile_path);
             Ok(())
@@ -28,9 +24,7 @@ pub fn maybe_decrypt_ethereum_private_key(keyfile_path: &str) -> Result<String> 
     match output.stdout.len() {
         0 => {
             info!("✘ Error decrypting keyfile!");
-            Err(AppError::Custom(convert_bytes_to_string_with_no_new_lines(
-                &output.stderr,
-            )?))
+            Err(convert_bytes_to_string_with_no_new_lines(&output.stderr)?.into())
         },
         _ => {
             info!("✔ Keyfile decrypted!");

@@ -5,7 +5,7 @@ use crate::{
     lib::{
         chain_id::EthereumChainId,
         ethereum_keys::EthereumKeys,
-        types::{Bytes, Result},
+        types::{Bytes, NoneError, Result},
     },
 };
 
@@ -88,6 +88,9 @@ impl InteractiveCliState {
     }
 
     pub fn get_eth_private_key(&self) -> Result<EthereumKeys> {
-        Ok(self.eth_private_key.clone()?)
+        Ok(self
+            .eth_private_key
+            .clone()
+            .ok_or(NoneError("Error getting ETH private key from state!"))?)
     }
 }

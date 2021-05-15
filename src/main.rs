@@ -1,4 +1,3 @@
-#![feature(try_trait)]
 #![allow(clippy::match_bool)]
 #![allow(clippy::too_many_arguments)]
 
@@ -13,6 +12,8 @@ extern crate log;
 extern crate lazy_static;
 #[macro_use]
 extern crate serde_derive;
+#[macro_use]
+extern crate quick_error;
 
 mod interactive_cli_lib;
 mod lib;

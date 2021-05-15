@@ -1,6 +1,6 @@
 use crate::{
     interactive_cli_lib::{state::InteractiveCliState, utils::get_user_input},
-    lib::{errors::AppError, types::Result},
+    lib::types::Result,
 };
 
 pub fn get_confirmation_from_user(state: InteractiveCliState) -> Result<InteractiveCliState> {
@@ -9,7 +9,7 @@ pub fn get_confirmation_from_user(state: InteractiveCliState) -> Result<Interact
         0 => Ok(state.set_should_sign_tx_to_true()),
         _ => match user_input == "y" || user_input == "yes" {
             true => Ok(state.set_should_sign_tx_to_true()),
-            false => Err(AppError::Custom("✘ Okay, not signing transaction. Bye!".to_string())),
+            false => Err("✘ Okay, not signing transaction. Bye!".into()),
         },
     })
 }

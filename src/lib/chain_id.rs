@@ -1,9 +1,6 @@
 use std::fmt;
 
-use crate::lib::{
-    errors::AppError,
-    types::{Byte, Result},
-};
+use crate::lib::types::{Byte, Result};
 
 #[derive(Clone, Copy)]
 pub enum EthereumChainId {
@@ -24,7 +21,7 @@ impl EthereumChainId {
             5 => Ok(EthereumChainId::Goerli),
             42 => Ok(EthereumChainId::Kovan),
             137 => Ok(EthereumChainId::Matic),
-            _ => Err(AppError::Custom(format!("✘ Unrecognised chain id: '{}'!", int))),
+            _ => Err(format!("✘ Unrecognised chain id: '{}'!", int).into()),
         }
     }
 
@@ -51,7 +48,7 @@ impl EthereumChainId {
             "Mainnet" | "mainnet" => Ok(EthereumChainId::Mainnet),
             "Ropsten" | "ropsten" => Ok(EthereumChainId::Ropsten),
             "Rinkeby" | "rinkeby" => Ok(EthereumChainId::Rinkeby),
-            _ => Err(AppError::Custom(format!("✘ Unrecognised chain: '{}'!", chain_str))),
+            _ => Err(format!("✘ Unrecognised chain: '{}'!", chain_str).into()),
         }
     }
 }
