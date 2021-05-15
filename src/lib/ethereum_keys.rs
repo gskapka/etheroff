@@ -1,6 +1,7 @@
 use ethereum_types::{Address as EthAddress, H256};
 use secp256k1::{
     key::{PublicKey, SecretKey},
+    rand::rngs::OsRng,
     Message,
     Secp256k1,
 };
@@ -11,7 +12,7 @@ use crate::lib::{
     utils::{decode_hex_with_err_msg, keccak_hash_bytes, maybe_strip_hex_prefix, validate_eth_private_key_hex_length},
 };
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct EthereumKeys {
     private_key: SecretKey,
     pub address: EthAddress,
@@ -19,6 +20,11 @@ pub struct EthereumKeys {
 }
 
 impl EthereumKeys {
+    fn new_random() -> Self {
+        let (secret_key, _) = Secp256k1::new().generate_keypair(&mut OsRng::new().expect("OsRng"));
+        Self::from_private_key(&secret_key)
+    }
+
     fn get_public_key_from_private_key(private_key: &SecretKey) -> PublicKey {
         PublicKey::from_secret_key(&Secp256k1::new(), private_key)
     }
@@ -74,5 +80,10 @@ mod tests {
         let pk = get_sample_private_key();
         let result = EthereumKeys::from_private_key(&pk);
         assert_eq!(result.address_string, expected_address);
+    }
+
+    #[test]
+    fn should_generate_random_private_keys() {
+        EthereumKeys::new_random();
     }
 }
