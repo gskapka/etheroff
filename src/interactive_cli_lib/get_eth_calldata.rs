@@ -1,12 +1,6 @@
 use crate::{
-    lib::{
-        types::Result,
-        utils::maybe_strip_hex_prefix,
-    },
-    interactive_cli_lib::{
-        utils::get_user_input,
-        state::InteractiveCliState,
-    }
+    interactive_cli_lib::{state::InteractiveCliState, utils::get_user_input},
+    lib::{types::Result, utils::maybe_strip_hex_prefix},
 };
 
 pub fn get_eth_calldata_from_user(state: InteractiveCliState) -> Result<InteractiveCliState> {
@@ -21,11 +15,10 @@ pub fn get_eth_calldata_from_user(state: InteractiveCliState) -> Result<Interact
             Ok(bytes) => {
                 println!("✔ ETH calldata: 0x{}", hex::encode(&bytes));
                 Ok(state.add_eth_calldata(bytes))
-            }
+            },
             Err(_) => {
                 println!("✘ Error decoding that calldata!");
                 get_eth_calldata_from_user(state)
-            }
+            },
         })
 }
-

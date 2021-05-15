@@ -1,11 +1,8 @@
 use ethereum_types::U256;
+
 use crate::lib::{
+    constants::{ETH_NUM_DECIMALS, ONE_GWEI},
     types::Result,
-    errors::AppError,
-    constants::{
-        ONE_GWEI,
-        ETH_NUM_DECIMALS
-    },
 };
 
 fn trim_newline(s: &mut String) -> String {
@@ -27,7 +24,7 @@ pub fn get_user_input() -> Result<String> {
 fn get_u256_or_return_custom_error(dec_str: &str, err: String) -> Result<U256> {
     match U256::from_dec_str(dec_str) {
         Ok(u256) => Ok(u256),
-        Err(_) => Err(AppError::Custom(err)),
+        Err(_) => Err(err.into()),
     }
 }
 
@@ -61,11 +58,12 @@ pub fn convert_eth_amount_str_to_u256(eth_amount_str: &str) -> Result<U256> {
             match components.len() {
                 1 => get_u256_or_return_custom_error(&format!("{}000000000000000000", amount_no_whitespace), err_msg),
                 2 => get_u256_or_return_custom_error(
-                    &format!("{}{}", components[0], right_pad_to_wei(&components[1])), err_msg
+                    &format!("{}{}", components[0], right_pad_to_wei(&components[1])),
+                    err_msg,
                 ),
-                _ => Err(AppError::Custom(err_msg)),
+                _ => Err(err_msg.into()),
             }
-        }
+        },
     }
 }
 
@@ -73,7 +71,7 @@ pub fn convert_eth_gas_price_gwei_to_wei(gas_price_gwei: f64) -> Result<U256> {
     let rounded = (gas_price_gwei * ONE_GWEI as f64).round() / ONE_GWEI as f64;
     match U256::from_dec_str(&format!("{}", ((rounded * ONE_GWEI as f64) as u64))) {
         Ok(u256) => Ok(u256),
-        Err(_) => Err(AppError::Custom(format!("✘ Could not convert {} to gas limit in wei!", gas_price_gwei)))
+        Err(_) => Err(format!("✘ Could not convert {} to gas limit in wei!", gas_price_gwei).into()),
     }
 }
 
@@ -115,27 +113,87 @@ mod tests {
         convert_eth_string_and_assert_result("0.000123456789123456", U256::from_dec_str("123456789123456").unwrap());
         convert_eth_string_and_assert_result("0.001234567891234567", U256::from_dec_str("1234567891234567").unwrap());
         convert_eth_string_and_assert_result("0.012345678912345678", U256::from_dec_str("12345678912345678").unwrap());
-        convert_eth_string_and_assert_result("0.123456789123456789", U256::from_dec_str("123456789123456789").unwrap());
-        convert_eth_string_and_assert_result("1.123456789123456789", U256::from_dec_str("1123456789123456789").unwrap());
+        convert_eth_string_and_assert_result(
+            "0.123456789123456789",
+            U256::from_dec_str("123456789123456789").unwrap(),
+        );
+        convert_eth_string_and_assert_result(
+            "1.123456789123456789",
+            U256::from_dec_str("1123456789123456789").unwrap(),
+        );
 
-        convert_eth_string_and_assert_result("1.000000000000000001", U256::from_dec_str("1000000000000000001").unwrap());
-        convert_eth_string_and_assert_result("1.000000000000000012", U256::from_dec_str("1000000000000000012").unwrap());
-        convert_eth_string_and_assert_result("1.000000000000000123", U256::from_dec_str("1000000000000000123").unwrap());
-        convert_eth_string_and_assert_result("1.000000000000001234", U256::from_dec_str("1000000000000001234").unwrap());
-        convert_eth_string_and_assert_result("1.000000000000012345", U256::from_dec_str("1000000000000012345").unwrap());
-        convert_eth_string_and_assert_result("1.000000000000123456", U256::from_dec_str("1000000000000123456").unwrap());
-        convert_eth_string_and_assert_result("1.000000000001234567", U256::from_dec_str("1000000000001234567").unwrap());
-        convert_eth_string_and_assert_result("1.000000000012345678", U256::from_dec_str("1000000000012345678").unwrap());
-        convert_eth_string_and_assert_result("1.000000000123456789", U256::from_dec_str("1000000000123456789").unwrap());
-        convert_eth_string_and_assert_result("1.000000001234567891", U256::from_dec_str("1000000001234567891").unwrap());
-        convert_eth_string_and_assert_result("1.000000012345678912", U256::from_dec_str("1000000012345678912").unwrap());
-        convert_eth_string_and_assert_result("1.000000123456789123", U256::from_dec_str("1000000123456789123").unwrap());
-        convert_eth_string_and_assert_result("1.000001234567891234", U256::from_dec_str("1000001234567891234").unwrap());
-        convert_eth_string_and_assert_result("1.000012345678912345", U256::from_dec_str("1000012345678912345").unwrap());
-        convert_eth_string_and_assert_result("1.000123456789123456", U256::from_dec_str("1000123456789123456").unwrap());
-        convert_eth_string_and_assert_result("1.001234567891234567", U256::from_dec_str("1001234567891234567").unwrap());
-        convert_eth_string_and_assert_result("1.012345678912345678", U256::from_dec_str("1012345678912345678").unwrap());
-        convert_eth_string_and_assert_result("1.123456789123456789", U256::from_dec_str("1123456789123456789").unwrap());
+        convert_eth_string_and_assert_result(
+            "1.000000000000000001",
+            U256::from_dec_str("1000000000000000001").unwrap(),
+        );
+        convert_eth_string_and_assert_result(
+            "1.000000000000000012",
+            U256::from_dec_str("1000000000000000012").unwrap(),
+        );
+        convert_eth_string_and_assert_result(
+            "1.000000000000000123",
+            U256::from_dec_str("1000000000000000123").unwrap(),
+        );
+        convert_eth_string_and_assert_result(
+            "1.000000000000001234",
+            U256::from_dec_str("1000000000000001234").unwrap(),
+        );
+        convert_eth_string_and_assert_result(
+            "1.000000000000012345",
+            U256::from_dec_str("1000000000000012345").unwrap(),
+        );
+        convert_eth_string_and_assert_result(
+            "1.000000000000123456",
+            U256::from_dec_str("1000000000000123456").unwrap(),
+        );
+        convert_eth_string_and_assert_result(
+            "1.000000000001234567",
+            U256::from_dec_str("1000000000001234567").unwrap(),
+        );
+        convert_eth_string_and_assert_result(
+            "1.000000000012345678",
+            U256::from_dec_str("1000000000012345678").unwrap(),
+        );
+        convert_eth_string_and_assert_result(
+            "1.000000000123456789",
+            U256::from_dec_str("1000000000123456789").unwrap(),
+        );
+        convert_eth_string_and_assert_result(
+            "1.000000001234567891",
+            U256::from_dec_str("1000000001234567891").unwrap(),
+        );
+        convert_eth_string_and_assert_result(
+            "1.000000012345678912",
+            U256::from_dec_str("1000000012345678912").unwrap(),
+        );
+        convert_eth_string_and_assert_result(
+            "1.000000123456789123",
+            U256::from_dec_str("1000000123456789123").unwrap(),
+        );
+        convert_eth_string_and_assert_result(
+            "1.000001234567891234",
+            U256::from_dec_str("1000001234567891234").unwrap(),
+        );
+        convert_eth_string_and_assert_result(
+            "1.000012345678912345",
+            U256::from_dec_str("1000012345678912345").unwrap(),
+        );
+        convert_eth_string_and_assert_result(
+            "1.000123456789123456",
+            U256::from_dec_str("1000123456789123456").unwrap(),
+        );
+        convert_eth_string_and_assert_result(
+            "1.001234567891234567",
+            U256::from_dec_str("1001234567891234567").unwrap(),
+        );
+        convert_eth_string_and_assert_result(
+            "1.012345678912345678",
+            U256::from_dec_str("1012345678912345678").unwrap(),
+        );
+        convert_eth_string_and_assert_result(
+            "1.123456789123456789",
+            U256::from_dec_str("1123456789123456789").unwrap(),
+        );
 
         convert_eth_string_and_assert_result("1.1", U256::from_dec_str("1100000000000000000").unwrap());
         convert_eth_string_and_assert_result("1.12", U256::from_dec_str("1120000000000000000").unwrap());
@@ -153,8 +211,14 @@ mod tests {
         convert_eth_string_and_assert_result("1.12345678912345", U256::from_dec_str("1123456789123450000").unwrap());
         convert_eth_string_and_assert_result("1.123456789123456", U256::from_dec_str("1123456789123456000").unwrap());
         convert_eth_string_and_assert_result("1.1234567891234567", U256::from_dec_str("1123456789123456700").unwrap());
-        convert_eth_string_and_assert_result("1.12345678912345678", U256::from_dec_str("1123456789123456780").unwrap());
-        convert_eth_string_and_assert_result("1.123456789123456789", U256::from_dec_str("1123456789123456789").unwrap());
+        convert_eth_string_and_assert_result(
+            "1.12345678912345678",
+            U256::from_dec_str("1123456789123456780").unwrap(),
+        );
+        convert_eth_string_and_assert_result(
+            "1.123456789123456789",
+            U256::from_dec_str("1123456789123456789").unwrap(),
+        );
 
         convert_eth_string_and_assert_result(".1", U256::from_dec_str("100000000000000000").unwrap());
         convert_eth_string_and_assert_result(".12", U256::from_dec_str("120000000000000000").unwrap());
@@ -178,7 +242,10 @@ mod tests {
 
         convert_eth_string_and_assert_result("1", U256::from_dec_str("1000000000000000000").unwrap());
         convert_eth_string_and_assert_result("1337.1337", U256::from_dec_str("1337133700000000000000").unwrap());
-        convert_eth_string_and_assert_result("1337.000000000000001337", U256::from_dec_str("1337000000000000001337").unwrap());
+        convert_eth_string_and_assert_result(
+            "1337.000000000000001337",
+            U256::from_dec_str("1337000000000000001337").unwrap(),
+        );
         convert_eth_string_and_assert_result("13.37 ", U256::from_dec_str("13370000000000000000").unwrap());
 
         convert_eth_string_and_assert_error("qwerty");

@@ -1,13 +1,13 @@
 use crate::{
+    interactive_cli_lib::state::InteractiveCliState,
     lib::{
-        types::Result,
         decrypt_ethereum_private_key::{
             check_keyfile_exists,
-            maybe_decrypt_ethereum_private_key,
             get_eth_private_key_from_hex,
+            maybe_decrypt_ethereum_private_key,
         },
+        types::Result,
     },
-    interactive_cli_lib::state::InteractiveCliState,
 };
 
 pub fn decrypt_ethereum_private_key_and_add_to_state(

@@ -1,31 +1,33 @@
-#![feature(try_trait)]
 #![allow(clippy::match_bool)]
 #![allow(clippy::too_many_arguments)]
 
 extern crate docopt;
-extern crate simplelog;
-extern crate secp256k1;
-extern crate tiny_keccak;
 extern crate ethereum_types;
-#[macro_use] extern crate log;
-#[macro_use] extern crate lazy_static;
-#[macro_use] extern crate serde_derive;
+extern crate secp256k1;
+extern crate simplelog;
+extern crate tiny_keccak;
+#[macro_use]
+extern crate log;
+#[macro_use]
+extern crate lazy_static;
+#[macro_use]
+extern crate serde_derive;
+#[macro_use]
+extern crate quick_error;
 
+mod interactive_cli_lib;
 mod lib;
 mod test_utils;
-mod interactive_cli_lib;
 
 use crate::{
     interactive_cli_lib::run_interactive_cli,
     lib::{
-        types::Result,
-        sign_ethereum_transaction::sign_ethereum_transaction,
+        ethereum_keys::EthereumKeys,
+        get_cli_args::{get_cli_args, CliArgs},
         get_tool_version_info::get_tool_version_info,
         initialize_logger::maybe_initialize_logger_and_return_cli_args,
-        get_cli_args::{
-            CliArgs,
-            get_cli_args,
-        },
+        sign_ethereum_transaction::sign_ethereum_transaction,
+        types::Result,
     },
 };
 
@@ -33,20 +35,25 @@ use crate::{
 pub fn main() -> Result<()> {
     match get_cli_args()
         .and_then(maybe_initialize_logger_and_return_cli_args)
-        .and_then(|cli_args|
-            match cli_args {
-                CliArgs {cmd_version: true, ..} => get_tool_version_info(),
-                CliArgs {cmd_signTransaction: true, ..} => sign_ethereum_transaction(cli_args),
-                _ => run_interactive_cli(cli_args.flag_keyfile),
-            }
-        ) {
-            Ok(result) => {
-                println!("{}", result);
-                Ok(())
-            },
-            Err(err) => {
-                println!("{}", err);
-                std::process::exit(1);
-            }
-        }
+        .and_then(|cli_args| match cli_args {
+            CliArgs { cmd_version: true, .. } => get_tool_version_info(),
+            CliArgs {
+                cmd_signTransaction: true,
+                ..
+            } => sign_ethereum_transaction(cli_args),
+            CliArgs {
+                cmd_generateRandom: true,
+                ..
+            } => Ok(EthereumKeys::new_random().to_json().to_string()),
+            _ => run_interactive_cli(cli_args.flag_keyfile),
+        }) {
+        Ok(result) => {
+            println!("{}", result);
+            Ok(())
+        },
+        Err(err) => {
+            println!("{}", err);
+            std::process::exit(1);
+        },
+    }
 }

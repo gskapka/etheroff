@@ -1,21 +1,12 @@
+use ethereum_types::{Address as EthAddress, U256};
+
 use crate::{
+    interactive_cli_lib::utils::{convert_eth_amount_str_to_u256, convert_eth_gas_price_gwei_to_wei},
     lib::{
-        types::{
-            Bytes,
-            Result,
-        },
         chain_id::EthereumChainId,
         ethereum_keys::EthereumKeys,
+        types::{Bytes, NoneError, Result},
     },
-    interactive_cli_lib::utils::{
-        convert_eth_amount_str_to_u256,
-        convert_eth_gas_price_gwei_to_wei,
-    },
-};
-
-use ethereum_types::{
-    U256,
-    Address as EthAddress,
 };
 
 pub struct InteractiveCliState {
@@ -97,6 +88,9 @@ impl InteractiveCliState {
     }
 
     pub fn get_eth_private_key(&self) -> Result<EthereumKeys> {
-        Ok(self.eth_private_key.clone()?)
+        Ok(self
+            .eth_private_key
+            .clone()
+            .ok_or(NoneError("Error getting ETH private key from state!"))?)
     }
 }

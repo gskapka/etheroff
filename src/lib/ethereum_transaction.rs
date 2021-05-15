@@ -1,15 +1,12 @@
-use rlp::RlpStream;
 use ethereum_types::U256;
+use rlp::RlpStream;
+
 use crate::lib::{
     ethereum_keys::EthereumKeys,
-    types::{
-        Byte,
-        Bytes,
-        Result,
-    },
+    types::{Byte, Bytes, Result},
 };
 
-#[derive(Clone, Debug, Eq, PartialEq,)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct EthereumTransaction {
     pub v: u64,
     pub r: U256,
@@ -84,14 +81,10 @@ impl EthereumTransaction {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::test_utils::{
-        get_sample_eth_address,
-        get_sample_ethereum_keys,
-    };
+    use crate::test_utils::{get_sample_eth_address, get_sample_ethereum_keys};
 
     #[test]
     fn should_sign_transaction() {
@@ -104,15 +97,8 @@ mod tests {
         let nonce: U256 = 1337.into();
         let gas_limit: U256 = 30000.into();
         let gas_price = U256::from_dec_str("60000000000").unwrap();
-        let unsigned_tx = EthereumTransaction::new_unsigned_transaction(
-            to,
-            data,
-            nonce,
-            value,
-            chain_id,
-            gas_limit,
-            gas_price,
-        );
+        let unsigned_tx =
+            EthereumTransaction::new_unsigned_transaction(to, data, nonce, value, chain_id, gas_limit, gas_price);
         let result = unsigned_tx.sign(&pk).unwrap().serialize_hex();
         assert_eq!(result, expected_result);
     }

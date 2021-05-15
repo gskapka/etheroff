@@ -1,20 +1,13 @@
+use ethereum_types::{H256, U256};
 use tiny_keccak::keccak256;
-use ethereum_types::{
-    U256,
-    H256
-};
+
 use crate::lib::{
-    types::{
-        Byte,
-        Bytes,
-        Result,
-    },
-    errors::AppError,
     constants::PRIVATE_KEY_HEX_LENGTH,
+    types::{Byte, Bytes, Result},
 };
 
 pub fn keccak_hash_bytes(bytes: &[Byte]) -> H256 {
-    H256::from(keccak256(&bytes[..]))
+    H256::from(keccak256(&bytes))
 }
 
 pub fn maybe_pad_hex(hex: &str) -> String {
@@ -27,7 +20,7 @@ pub fn maybe_pad_hex(hex: &str) -> String {
 pub fn convert_dec_str_to_u256_with_err_msg(dec_str: &str, err_msg: &str) -> Result<U256> {
     match U256::from_dec_str(dec_str) {
         Ok(u256) => Ok(u256),
-        Err(_) => Err(AppError::Custom(err_msg.to_string())),
+        Err(_) => Err(err_msg.into()),
     }
 }
 
@@ -51,7 +44,10 @@ pub fn maybe_strip_hex_prefix(hex: &str) -> Result<String> {
     let lowercase_hex_prefix = "0x";
     let uppercase_hex_prefix = "0X";
     match hex.starts_with(lowercase_hex_prefix) || hex.starts_with(uppercase_hex_prefix) {
-        true => Ok(hex.trim_start_matches(lowercase_hex_prefix).trim_start_matches(uppercase_hex_prefix).to_string()),
+        true => Ok(hex
+            .trim_start_matches(lowercase_hex_prefix)
+            .trim_start_matches(uppercase_hex_prefix)
+            .to_string()),
         false => Ok(hex.to_string()),
     }
 }
@@ -59,22 +55,26 @@ pub fn maybe_strip_hex_prefix(hex: &str) -> Result<String> {
 pub fn decode_hex_with_err_msg(hex: &str, err_msg: &str) -> Result<Bytes> {
     match hex::decode(hex) {
         Ok(bytes) => Ok(bytes),
-        Err(_) => Err(AppError::Custom(err_msg.to_string()))
+        Err(_) => Err(err_msg.into()),
     }
 }
 
-pub fn validate_eth_private_key_hex_length(hex: &str) -> Result<String> { // TODO test
+pub fn validate_eth_private_key_hex_length(hex: &str) -> Result<String> {
+    // TODO test
     match hex.chars().count() == PRIVATE_KEY_HEX_LENGTH {
         true => Ok(hex.to_string()),
-        false => Err(AppError::Custom(
-            format!("✘ Your private key must be {} hex chars in length!", PRIVATE_KEY_HEX_LENGTH)
-        ))
+        false => Err(format!(
+            "✘ Your private key must be {} hex chars in length!",
+            PRIVATE_KEY_HEX_LENGTH
+        )
+        .into()),
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::lib::errors::AppError;
 
     #[test]
     fn should_strip_hex_prefix() {
