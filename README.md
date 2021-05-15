@@ -1,6 +1,6 @@
 # :heart_eyes_cat: Etheroff
 
-A simple CLI for offline signing of ethereum transactions.
+A simple CLI for offline signing of ethereum transactions. It can also generate random ethereum private-keys.
 
 &nbsp;
 
@@ -12,7 +12,7 @@ __`❍ git clone https://github.com/gskapka/etheroff.git`__
 
 **2)** Enter app dir and build it:
 
-__`❍ cd etheroff && cargo +nightly b --release`__
+__`❍ cd etheroff && cargo b --release`__
 
 **3)** You'll find the __`etheroff`__ binary in:
 
@@ -40,17 +40,19 @@ A simple CLI for offline signing of ethereum transactions.
 
 Usage:  etheroff [--help]
         etheroff version
+        etheroff generateRandom
         etheroff [--keyfile=<path>]
         etheroff signTransaction <to> <value> <nonce> [--gasLimit=<uint>] [--gasPrice=<uint>] [--data=<bytes>] [--chainId=<uint>] [--keyfile=<path>] [--logLevel=<string>]
 
 Commands:
 
-        <no-command>           ❍ Run the interactive Q&A version of this tool.
         version                ❍ Show version info.
+        generateRandom         ❍ Generate random ETH private key & address.
         signTransaction        ❍ Sign an ethereum transaction.
         <to>                   ❍ Ethereum address to send the transaction to.
         <nonce>                ❍ The nonce to be used for the ethereum transaction.
         <value>                ❍ How much ether to send (in Wei!)
+        <no-command>           ❍ Run the interactive Q&A version of this tool.
 
 Options:
 
@@ -62,6 +64,7 @@ Options:
         --gasPrice=<uint>      ❍ The gas price for the ETH transaction. [default: 20000000000]
         --logLevel=<level>     ❍ Define the level of logging in the tool's output as one of: `none`, `info`, `debug`,
                                  `trace` or `error`. [default: none]
+
 ```
 
 &nbsp;
@@ -141,6 +144,21 @@ You'll find a sample script in the __`./example/`__ directory. Run it to see the
 11:18:26 [ INFO] ✔ With calldata: 0x0decaf
 11:18:26 [ INFO] ✔ For a total price of : 0.001800000000000001 ETH
 f869820539850df847580082753094fedfe2616eb3661cb8fed2782f5f0cc91d59dcac01830decaf2aa0c8a9434fa0775488d27f5395bcd4e1180b0b67800d58bc3a69f1e9071e45d3eba06084d3d8e723188c441403e0ecd6d7cd894346730a28d557eda393fc2eb0fda3
+```
+
+&nbsp;
+
+## :shipit: Generating a random ETH address:
+
+After building the tool, simply call it like so:
+
+```
+./etheroff generateRandom
+{
+  "eth_address": "0xc1eef08242d7da6bd4f5887ef38e37dc2c0d9110",
+  "private_key": "0xd3df92df1f2445f9dd6e90464ebd51aa1e10c78a81998258bbfd297614e3c011"
+}
+
 ```
 
 :exclamation: __NOTE:__ The above example has logging turned on. The tool will _default_ to no logging and so _only_ the final signed transaction will be outputted to stdout. Perfect for programmatic use-cases.
