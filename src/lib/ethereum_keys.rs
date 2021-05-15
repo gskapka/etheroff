@@ -21,12 +21,12 @@ pub struct EthereumKeys {
 }
 
 impl EthereumKeys {
-    fn new_random() -> Self {
+    pub fn new_random() -> Self {
         let (secret_key, _) = Secp256k1::new().generate_keypair(&mut OsRng::new().expect("OsRng"));
         Self::from_private_key(&secret_key)
     }
 
-    fn to_json(&self) -> JsonValue {
+    pub fn to_json(&self) -> JsonValue {
         json!({
             "private_key": format!("0x{}", hex::encode(&self.private_key[..])),
             "eth_address": format!("0x{}", self.address_string),

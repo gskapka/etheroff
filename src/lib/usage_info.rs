@@ -12,17 +12,19 @@ A simple CLI for offline signing of ethereum transactions.
 
 Usage:  etheroff [--help]
         etheroff version
+        etheroff generateRandom
         etheroff [--keyfile=<path>]
         etheroff signTransaction <to> <value> <nonce> [--gasLimit=<uint>] [--gasPrice=<uint>] [--data=<bytes>] [--chainId=<uint>] [--keyfile=<path>] [--logLevel=<string>]
 
 Commands:
 
-        <no-command>           ❍ Run the interactive Q&A version of this tool.
         version                ❍ Show version info.
+        generateRandom         ❍ Generate random ETH private key & address.
         signTransaction        ❍ Sign an ethereum transaction.
         <to>                   ❍ Ethereum address to send the transaction to.
         <nonce>                ❍ The nonce to be used for the ethereum transaction.
         <value>                ❍ How much ether to send (in Wei!)
+        <no-command>           ❍ Run the interactive Q&A version of this tool.
 
 Options:
 

@@ -22,6 +22,7 @@ mod test_utils;
 use crate::{
     interactive_cli_lib::run_interactive_cli,
     lib::{
+        ethereum_keys::EthereumKeys,
         get_cli_args::{get_cli_args, CliArgs},
         get_tool_version_info::get_tool_version_info,
         initialize_logger::maybe_initialize_logger_and_return_cli_args,
@@ -40,6 +41,10 @@ pub fn main() -> Result<()> {
                 cmd_signTransaction: true,
                 ..
             } => sign_ethereum_transaction(cli_args),
+            CliArgs {
+                cmd_generateRandom: true,
+                ..
+            } => Ok(EthereumKeys::new_random().to_json().to_string()),
             _ => run_interactive_cli(cli_args.flag_keyfile),
         }) {
         Ok(result) => {
